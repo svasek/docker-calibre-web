@@ -38,11 +38,10 @@ And if you are interested in the original __Calibre__ ebook management tool then
 
 ## Features ##
 
- * running Calibre Web under its own user (not root)
- * changing of the UID and GID for the Calibre Web user
+ * running Calibre Web 
+ * automaticaly updated on every (re)start of the container if needed
  * no usage of NGINX inside the container, only the Calibre Web application is served as single application without any supervisor
- * Google Drive integration is included
- * creation of app.db symlink at `/books/app.db` for external access like backup possibility
+ * disabled GoogleDrive/Kobo/GoodReads integrations, ldap, oauth to strip down the image
  * support of **Calibre ebook-convert** tool to convert to MOBI
  * **Calibre ebook-convert** uses `glibc` and therefore https://github.com/sgerrand/alpine-pkg-glibc is installed
 
