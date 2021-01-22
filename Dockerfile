@@ -1,9 +1,8 @@
-FROM alpine:latest
+FROM alpine:3.13
 
 LABEL maintainer="Milos Svasek <Milos@Svasek.net>" \
       image.version="1.0" \
       image.description="Docker image for Calibre Web, based on Alpine" \
-      image.date="2021-01-21" \
       url.docker="https://hub.docker.com/r/svasek/calibre-web" \
       url.github="https://github.com/svasek/docker-calibre-web"
 
@@ -54,6 +53,7 @@ RUN \
     echo "---- Install python packages via pip ----" && \
     ### REQUIRED ###
     ### see https://github.com/janeczku/calibre-web/blob/master/requirements.txt
+    ### Commented out are replaced by system packages
     pip install --no-cache --upgrade \
         #Babel>=1.3, <2.9' \
         #'Flask-Babel>=0.11.1,<2.1.0' \
@@ -96,7 +96,5 @@ VOLUME $APP_HOME/config
 
 # Expose ports
 EXPOSE $CALIBRE_PORT
-
-#USER ${PUSER}
 
 CMD $APP_HOME/run.sh 
