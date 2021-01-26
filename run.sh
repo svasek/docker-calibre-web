@@ -40,4 +40,4 @@ export LD_LIBRARY_PATH="/lib:/usr/lib:/usr/glibc-compat/lib:/opt/calibre/lib:$LD
 export PATH="$PATH:/opt/calibre" 
 export LC_ALL="C" 
 
-/usr/bin/python3 "$APP_HOME/app/cps.py"
+exec /usr/bin/python3 "$APP_HOME/app/cps.py"
