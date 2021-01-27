@@ -40,7 +40,7 @@ RUN \
     \
     # install python and create a symlink as python
     echo "**** install Packages ****" && \
-    apk -U add --no-cache git curl python3 ca-certificates libxml2 libxslt libev unrar \
+    apk -U add --no-cache tzdata git curl python3 ca-certificates libxml2 libxslt libev unrar \
         py3-pip py3-wheel py3-openssl py3-setuptools py3-libxml2 \
         py3-lxml py3-babel py3-flask-babel py3-flask-login py3-flask py3-pypdf2 \
         py3-rarfile py3-tz py3-requests py3-sqlalchemy py3-tornado py3-unidecode \ 
