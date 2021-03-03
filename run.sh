@@ -10,8 +10,7 @@ echo "[INFO] Latest  version of Calibre converter is \"$LATEST_VERSION\""
 echo "[INFO] Current version of Calibre converter is \"$LOCAL_VERSION\""
 if [ "$LATEST_VERSION" != "$LOCAL_VERSION" ]; then
     echo "[INFO] ... install/update calibre to /opt"
-    curl -s https://download.calibre-ebook.com/linux-installer.py | python3 -c "import sys; main=lambda:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main(install_dir='/opt', isolated=True)"
-    rm -rf $TMPDIR/calibre-installer-cache
+    mkdir -p /opt/calibre && curl -s https://download.calibre-ebook.com/$LATEST_VERSION/calibre-$LATEST_VERSION-x86_64.txz | tar xfJ - -C /opt/calibre
 fi
 
 # download the latest version of the specified application
