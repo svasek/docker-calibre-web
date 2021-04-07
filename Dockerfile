@@ -47,8 +47,8 @@ RUN \
         fontconfig freetype lcms2 libjpeg-turbo libltdl libpng libwebp tiff \
         zlib ghostscript mesa-gl imagemagick6 imagemagick6-libs && \
     \
-    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-2.32-r0.apk && \
-    apk add --no-cache --allow-untrusted glibc-2.32-r0.apk && rm -f glibc-2.32-r0.apk && \
+    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.33-r0/glibc-2.33-r0.apk && \
+    apk add --no-cache --allow-untrusted glibc-2.33-r0.apk && rm -f glibc-2.33-r0.apk && \
     \
     echo "---- Install python packages via pip ----" && \
     ### REQUIRED ###
