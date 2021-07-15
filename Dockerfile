@@ -1,4 +1,4 @@
-FROM alpine:3.13
+FROM alpine:3.14
 
 LABEL maintainer="Milos Svasek <Milos@Svasek.net>" \
       image.version="1.0" \
