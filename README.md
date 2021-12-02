@@ -1,5 +1,6 @@
 # Calibre Web
 
+[![Docker Image CI](https://github.com/svasek/docker-calibre-web/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/svasek/docker-calibre-web/actions/workflows/docker-publish.yml)
 [![Docker Stars](https://img.shields.io/docker/stars/svasek/calibre-web.svg)](https://hub.docker.com/r/svasek/calibre-web)
 [![Docker Pulls](https://img.shields.io/docker/pulls/svasek/calibre-web.svg)](https://hub.docker.com/r/svasek/calibre-web)
 [![](https://images.microbadger.com/badges/image/svasek/calibre-web.svg)](https://microbadger.com/images/svasek/calibre-web "Get your own image badge on microbadger.com")
