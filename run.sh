@@ -39,4 +39,5 @@ export LD_LIBRARY_PATH="/lib:/usr/lib:/usr/glibc-compat/lib:/opt/calibre/lib:$LD
 export PATH="$PATH:/opt/calibre" 
 export LC_ALL="C" 
 
+echo "Running calibre_web server ..."
 exec /usr/bin/python3 "$APP_HOME/app/cps.py"
