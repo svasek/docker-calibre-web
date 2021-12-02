@@ -45,7 +45,7 @@ RUN \
     apk -U add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/v3.14/main \
         tzdata git curl python3 ca-certificates libxml2 libxslt libev unrar \
         py3-pip py3-wheel py3-openssl py3-setuptools py3-libxml2 py3-chardet \
-        py3-lxml py3-babel py3-flask-babel py3-flask-login py3-flask py3-flask-wtf py3-pypdf2 \
+        py3-lxml py3-babel py3-flask-babel py3-flask-login py3-flask py3-flask-wtf py3-natsort\
         py3-rarfile py3-tz py3-requests py3-sqlalchemy py3-tornado py3-unidecode \ 
         fontconfig freetype lcms2 libjpeg-turbo libltdl libpng libwebp tiff \
         zlib ghostscript mesa-gl imagemagick6 imagemagick6-libs && \
@@ -63,6 +63,8 @@ RUN \
         'backports_abc>=0.4' \
         'iso-639>=0.4.5,<0.5.0' \
         'Wand>=0.4.4,<0.7.0' \
+        'PyPDF3>=1.0.0,<1.0.6' \
+        'comicapi>=2.2.0,<2.3.0' \
     && \
     # cleanup temporary files
     rm -rf /tmp/* && \
