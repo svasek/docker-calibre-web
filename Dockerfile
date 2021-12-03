@@ -65,6 +65,7 @@ RUN \
         'Wand>=0.4.4,<0.7.0' \
         'PyPDF3>=1.0.0,<1.0.6' \
         'comicapi>=2.2.0,<2.3.0' \
+        'scholarly>=1.2.0,<1.5' \
     && \
     # cleanup temporary files
     rm -rf /tmp/* && \
