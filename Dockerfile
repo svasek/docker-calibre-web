@@ -68,7 +68,7 @@ RUN \
         'scholarly>=1.2.0,<1.5' \
     && \
     # fix issue of 'fake_useragent' with module not connecting properly - IndexError
-    sed -i 's/table class="w5-table-all notranslate/table class="ws-table-all notranslate/g' \
+    sed -i 's/table class="w3-table-all notranslate/table class="ws-table-all notranslate/g' \
         /usr/lib/python3.9/site-packages/fake_useragent/utils.py && \
     # cleanup temporary files
     rm -rf /tmp/* && \
