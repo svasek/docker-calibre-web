@@ -1,5 +1,5 @@
 FROM alpine:3.15
-ARG VERSION=1.1
+ARG VERSION=1.2
 
 LABEL maintainer="Milos Svasek <Milos@Svasek.net>" \
       image.version="${VERSION}" \
@@ -43,7 +43,7 @@ RUN \
     # added repository Alpine:3.14 for unrar which is missing in 3.15
     echo "**** install Packages ****" && \
     apk -U add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/v3.14/main \
-        tzdata git curl python3 ca-certificates libxml2 libxslt libev unrar \
+        tzdata git curl python3 ca-certificates libxml2 libxslt libev unrar sqlite \
         py3-pip py3-wheel py3-openssl py3-setuptools py3-libxml2 py3-chardet \
         py3-lxml py3-babel py3-flask-babel py3-flask-login py3-flask py3-flask-wtf py3-natsort\
         py3-rarfile py3-tz py3-requests py3-sqlalchemy py3-tornado py3-unidecode \ 
@@ -67,6 +67,8 @@ RUN \
         'comicapi>=2.2.0,<2.3.0' \
         'scholarly>=1.2.0,<1.5' \
     && \
+    # fix issue of 'fake_useragent' with module not connecting properly - IndexError
+    sed -i 's/table class="w5-table-all notranslate/table class="ws-table-all notranslate/g' /usr/lib/python3.9/site-packages/fake_useragent/utils.py \
     # cleanup temporary files
     rm -rf /tmp/* && \
     rm -rf /var/cache/apk/* && \

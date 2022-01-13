@@ -53,9 +53,7 @@ And if you are interested in the original __Calibre__ ebook management tool then
 
 ## Configuration at first launch ##
  1. Point your browser to `http://hostname:<HTTP PORT>` e.g. `http://hostname:8083`
- 2. Set Location of your Calibre books folder to the path of the folder where you mounted your Calibre folder in the container, which is by default `/books`.
-    So enter at the field __Location of Calibre database__ the mapped volume `/books`.
- 3. Hit __Submit__ then __Login__.
+ 2. If you want to change location of your Calibre books folder, go to `http://hostname:8083/admin/dbconfig` and set it to the path of the folder where you mounted your Calibre folder in the container. This is `/books` by default.
 
 Default admin login:
  * __Username:__ admin
@@ -152,7 +150,7 @@ Accessing http://'host':8080 (e.g. http://192.168.0.10:8080) would then show you
 
 ### Container Timezone
 
-In the case of the Synology NAS it is not possible to map `/etc/localtime` for timesync,
+Just set the enviroment variable `TZ` : 
 
 Examples:
 
