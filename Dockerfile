@@ -30,7 +30,11 @@ ENV \
     \
     # This hack is widely applied to avoid python printing issues in docker containers.
     # See: https://github.com/Docker-Hub-frolvlad/docker-alpine-python3/pull/13
-    PYTHONUNBUFFERED=1 
+    PYTHONUNBUFFERED=1 \
+    # Set the default locale
+    LC_ALL="C" \
+    # Set the $LD_LIBRARY_PATH to use glibc libraries
+    LD_LIBRARY_PATH="/lib:/usr/lib:/usr/glibc-compat/lib:/opt/calibre/lib"
 
 RUN \
     # create temporary directories
@@ -45,13 +49,14 @@ RUN \
     apk -U add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/v3.14/main \
         tzdata git curl python3 ca-certificates libxml2 libxslt libev unrar sqlite \
         py3-pip py3-wheel py3-openssl py3-setuptools py3-libxml2 py3-chardet \
-        py3-lxml py3-babel py3-flask-babel py3-flask-login py3-flask py3-flask-wtf py3-natsort\
+        py3-lxml py3-babel py3-flask-babel py3-flask-login py3-flask py3-flask-wtf py3-natsort \
         py3-rarfile py3-tz py3-requests py3-sqlalchemy py3-tornado py3-unidecode \ 
         fontconfig freetype lcms2 libjpeg-turbo libltdl libpng libwebp tiff \
         zlib ghostscript mesa-gl imagemagick6 imagemagick6-libs && \
     \
+    wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
     wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.34-r0/glibc-2.34-r0.apk && \
-    apk add --no-cache --allow-untrusted glibc-2.34-r0.apk && rm -f glibc-2.34-r0.apk && \
+    apk add --no-cache glibc-2.34-r0.apk && rm -f glibc-2.34-r0.apk && \
     \
     echo "---- Install python packages via pip ----" && \
     ### REQUIRED ###
@@ -75,8 +80,7 @@ RUN \
     rm -rf /var/cache/apk/* && \
     \
     # create Calibre Web folder structure
-    mkdir -p $APP_HOME/app && \
-    mkdir -p $APP_HOME/config && \
+    mkdir -p $APP_HOME/app CALIBRE_DBPATH CALIBRE_PATH /opt/calibre && \
     # set defaults
     git config --global pull.rebase false
 
