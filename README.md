@@ -10,7 +10,7 @@
 
 [Calibre Web](https://github.com/janeczku/calibre-web) is a web app providing a clean interface for browsing, reading and downloading eBooks using an **existing Calibre database**.
 
-![screenshot](https://raw.githubusercontent.com/janeczku/docker-calibre-web/master/screenshot.png)
+![screenshot](https://github.com/janeczku/calibre-web/wiki/images/main_screen.png)
 
 __Calibre Web__ comes with the following features:
 
@@ -120,7 +120,7 @@ or
 docker create --name=calibre-web --restart=always \
 -v /volume1/books/calibre:/books \
 -v /volume1/docker/apps/calibre-web/config:/calibre-web/config \
--e TZ=Europe/Vienna \
+-e TZ=Europe/Prague \
 -p 8083:8083 \
 svasek/calibre-web
 ```
@@ -143,7 +143,6 @@ Accessing http://'host':8080 (e.g. http://192.168.0.10:8080) would then show you
 * `-p 8083` - http port for the web user interface
 * `-v /books` - local path which contains the Calibre books and the necessary `metadata.db`  which holds all collected meta-information of the books
 * `-v /calibre-web/app` - local path for Calibre Web application files; set this volume if you want to use Google Drive
-* `-v /etc/localtime` - for timesync - __optional__
 * `-v /calibre-web/config` - local path for Calibre Web config files, like `app.db` and `gdrive.db`
 * `-e APP_REPO` - set it to the Calibre Web GitHub repository; by default it uses https://github.com/janeczku/calibre-web.git - __optional__
 * `-e APP_BRANCH` - set which Calibre Web GitHub repository branch you want to use, __master__ (default branch) - __optional__
@@ -156,45 +155,9 @@ Examples:
 
  * ```UTC``` - __this is the default value if no value is set__
  * ```Europe/Prague```
- * ```Europe/Vienna```
  * ```America/New_York```
  * ...
 
-Once the container is running you can get all possible timezones as tree via the command ```docker exec -it <CONTAINER> tree /usr/share/zoneinfo```
-
-See also at [possible timezone values](TIMEZONES.md).
-
-__Don't use the value__ `localtime` because it results into: `failed to access '/etc/localtime': Too many levels of symbolic links`
-
-
-## Container Directory Structure ##
-```
- /
-   |- books
-   |- calibre-web
-       |- app
-       |    |- "all Calibre Web Application files"
-       |    |- app.db -> /calibre-web/config/app.db
-       |    |- gdrive.db -> /calibre-web/config/gdrive.db
-       |    |- calibre-web.log
-       |    |- cps 
-       |    |    |- *.py
-       |    |    |- *.pyc
-       |    |
-       |    |- vendor
-       |         |- kindlegen -> /calibre-web/kindlegen/kindlegen
-       |
-       |- config
-       |    |- app.db
-       |    |- gdrive.db
-       |
-       |- kindlegen
-            |- EULA*.txt
-            |- KindleGen Legal Notices*.txt
-            |- docs
-            |- kindlegen
-            |- manual.html
-```
 
 ## Additional ##
 Shell access whilst the container is running: `docker exec -it calibre-web /bin/bash`
@@ -246,8 +209,7 @@ docker pull svasek/calibre-web
 ```
 docker create --name=calibre-web --restart=always \
 -v /volume1/books/calibre:/books \
--e SET_CONTAINER_TIMEZONE=true \
--e CONTAINER_TIMEZONE=Europe/Vienna \
+-e TZ=Europe/Prague \
 -e PGID=65539 -e PUID=1029 \
 -p 8083:8083 \
 svasek/calibre-web
