@@ -1,5 +1,5 @@
 FROM alpine:3.15
-ARG VERSION=1.2
+ARG VERSION=1.3
 
 LABEL maintainer="Milos Svasek <Milos@Svasek.net>" \
       image.version="${VERSION}" \
@@ -52,7 +52,8 @@ RUN \
         py3-lxml py3-babel py3-flask-babel py3-flask-login py3-flask py3-flask-wtf py3-natsort \
         py3-rarfile py3-tz py3-requests py3-sqlalchemy py3-tornado py3-unidecode \ 
         fontconfig freetype lcms2 libjpeg-turbo libltdl libpng libwebp tiff \
-        zlib ghostscript mesa-gl imagemagick6 imagemagick6-libs && \
+        zlib ghostscript mesa-gl imagemagick6 imagemagick6-libs \
+        gcc python3-dev musl-dev && \
     \
     wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
     wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.34-r0/glibc-2.34-r0.apk && \
@@ -70,14 +71,22 @@ RUN \
         'Wand>=0.4.4,<0.7.0' \
         'PyPDF3>=1.0.0,<1.0.6' \
         'comicapi>=2.2.0,<2.3.0' \
-        'scholarly>=1.2.0,<1.5' \
+        # extracting metadata
+        'scholarly>=1.2.0,<1.6' \
+        # goodreads
+        'goodreads>=0.3.2,<0.4.0' \
+        'python-Levenshtein>=0.12.0,<0.13.0' \
     && \
+    # fix imagemagick pdf rule
+    sed -i 's#<!-- <policy domain="module" rights="none" pattern="{PS,PDF,XPS}" /> -->#<policy domain="module" rights="read" pattern="PDF" />#g' \
+        /etc/ImageMagick-6/policy.xml && \
     # fix issue of 'fake_useragent' with module not connecting properly - IndexError
     sed -i 's/table class="w3-table-all notranslate/table class="ws-table-all notranslate/g' \
         /usr/lib/python3.9/site-packages/fake_useragent/utils.py && \
+    # uninstall unnecessary packages
+    apk del --purge gcc python3-dev musl-dev && \
     # cleanup temporary files
-    rm -rf /tmp/* && \
-    rm -rf /var/cache/apk/* && \
+    rm -rf /tmp/* && rm -rf /var/cache/apk/* && \
     \
     # create Calibre Web folder structure
     mkdir -p $APP_HOME/app CALIBRE_DBPATH CALIBRE_PATH /opt/calibre && \
