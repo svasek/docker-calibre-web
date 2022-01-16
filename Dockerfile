@@ -1,5 +1,5 @@
 FROM alpine:3.15
-ARG VERSION=1.3
+ARG VERSION=1.4
 
 LABEL maintainer="Milos Svasek <Milos@Svasek.net>" \
       image.version="${VERSION}" \
@@ -34,7 +34,13 @@ ENV \
     # Set the default locale
     LC_ALL="C" \
     # Set the $LD_LIBRARY_PATH to use glibc libraries
-    LD_LIBRARY_PATH="/lib:/usr/lib:/usr/glibc-compat/lib:/opt/calibre/lib"
+    LD_LIBRARY_PATH="/lib:/usr/lib:/usr/glibc-compat/lib:/opt/calibre/lib" \
+    # Python packages
+    PKGS_PYTHON_0="py3-wheel py3-openssl py3-libxml2" \
+    PKGS_PYTHON_1="py3-babel py3-flask-babel py3-flask-login py3-flask py3-tz py3-requests py3-sqlalchemy \
+        py3-tornado py3-unidecode py3-lxml py3-flask-wtf py3-chardet py3-rarfile py3-natsort" \
+    # Development packages necessary for instalation/compilation python modules with pip
+    PKGS_DEVEL="python3-dev py3-pip py3-setuptools gcc musl-dev"
 
 RUN \
     # create temporary directories
@@ -48,12 +54,9 @@ RUN \
     echo "**** install Packages ****" && \
     apk -U add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/v3.14/main \
         tzdata git curl python3 ca-certificates libxml2 libxslt libev unrar sqlite \
-        py3-pip py3-wheel py3-openssl py3-setuptools py3-libxml2 py3-chardet \
-        py3-lxml py3-babel py3-flask-babel py3-flask-login py3-flask py3-flask-wtf py3-natsort \
-        py3-rarfile py3-tz py3-requests py3-sqlalchemy py3-tornado py3-unidecode \ 
         fontconfig freetype lcms2 libjpeg-turbo libltdl libpng libwebp tiff \
         zlib ghostscript mesa-gl imagemagick6 imagemagick6-libs \
-        gcc python3-dev musl-dev && \
+        ${PKGS_DEVEL} ${PKGS_PYTHON_0} ${PKGS_PYTHON_1} && \
     \
     wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
     wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.34-r0/glibc-2.34-r0.apk && \
@@ -62,20 +65,19 @@ RUN \
     echo "---- Install python packages via pip ----" && \
     ### REQUIRED ###
     ### see https://github.com/janeczku/calibre-web/blob/master/requirements.txt
+    ### optional: https://github.com/janeczku/calibre-web/blob/master/optional-requirements.txt
     ### Most of them are replaced by a system packages
-    pip install --no-cache --upgrade \
+    pip install --no-cache-dir --upgrade \
         'Flask-Principal>=0.3.2,<0.5.1' \
-        'singledispatch>=3.4.0.0,<3.5.0.0' \
         'backports_abc>=0.4' \
         'iso-639>=0.4.5,<0.5.0' \
         'Wand>=0.4.4,<0.7.0' \
         'PyPDF3>=1.0.0,<1.0.6' \
+        ## OPTIONAL
+        # Comics
         'comicapi>=2.2.0,<2.3.0' \
-        # extracting metadata
+        # metadata extraction
         'scholarly>=1.2.0,<1.6' \
-        # goodreads
-        'goodreads>=0.3.2,<0.4.0' \
-        'python-Levenshtein>=0.12.0,<0.13.0' \
     && \
     # fix imagemagick pdf rule
     sed -i 's#<!-- <policy domain="module" rights="none" pattern="{PS,PDF,XPS}" /> -->#<policy domain="module" rights="read" pattern="PDF" />#g' \
@@ -84,26 +86,24 @@ RUN \
     sed -i 's/table class="w3-table-all notranslate/table class="ws-table-all notranslate/g' \
         /usr/lib/python3.9/site-packages/fake_useragent/utils.py && \
     # uninstall unnecessary packages
-    apk del --purge gcc python3-dev musl-dev && \
+    apk del --purge ${PKGS_DEVEL} && \
     # cleanup temporary files
     rm -rf /tmp/* && rm -rf /var/cache/apk/* && \
     \
     # create Calibre Web folder structure
-    mkdir -p $APP_HOME/app CALIBRE_DBPATH CALIBRE_PATH /opt/calibre && \
+    mkdir -p ${APP_HOME}/app ${CALIBRE_DBPATH} ${CALIBRE_PATH} /opt/calibre && \
     # set defaults
     git config --global pull.rebase false
 
 # set the working directory for the APP
-WORKDIR $APP_HOME/app
+WORKDIR ${APP_HOME}/app
 
-COPY run.sh $APP_HOME/run.sh 
+COPY run.sh ${APP_HOME}/run.sh 
 
 # Set volumes for the Calibre Web folder structure
-VOLUME /books
-VOLUME $APP_HOME/app
-VOLUME $APP_HOME/config
+VOLUME ${CALIBRE_DBPATH} ${CALIBRE_PATH}
 
 # Expose ports
-EXPOSE $CALIBRE_PORT
+EXPOSE ${CALIBRE_PORT}
 
-CMD $APP_HOME/run.sh 
+CMD ${APP_HOME}/run.sh 
