@@ -1,16 +1,18 @@
 FROM alpine:3.15
-ARG VERSION=1.4
+
+ARG IMAGE_VERSION=1.4 \
+    GLIBC_VERSION=2.34-r0
 
 LABEL maintainer="Milos Svasek <Milos@Svasek.net>" \
-      image.version="${VERSION}" \
+      image.version="${IMAGE_VERSION}" \
       image.description="Docker image for Calibre Web, based on Alpine" \
       url.docker="https://hub.docker.com/r/svasek/calibre-web" \
       url.github="https://github.com/svasek/docker-calibre-web"
 
 # Set basic environment settings
 ENV \
-    # - VERSION: the docker image version (corresponds to the above LABEL image.version)
-    VERSION="${VERSION}" \
+    # - IMAGE_VERSION: the docker image version (corresponds to the above LABEL image.version)
+    IMAGE_VERSION="${IMAGE_VERSION}" \
     \
     # - APP_NAME: the APP name
     APP_NAME="Calibre-Web" \
@@ -59,8 +61,8 @@ RUN \
         ${PKGS_DEVEL} ${PKGS_PYTHON_0} ${PKGS_PYTHON_1} && \
     \
     wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
-    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.34-r0/glibc-2.34-r0.apk && \
-    apk add --no-cache glibc-2.34-r0.apk && rm -f glibc-2.34-r0.apk && \
+    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk && \
+    apk add --no-cache glibc-${GLIBC_VERSION}.apk && rm -f glibc-${GLIBC_VERSION}.apk && \
     \
     echo "---- Install python packages via pip ----" && \
     ### REQUIRED ###
