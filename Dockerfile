@@ -1,6 +1,6 @@
 FROM alpine:3.15
 
-ARG IMAGE_VERSION=1.4 \
+ARG IMAGE_VERSION=1.5 \
     GLIBC_VERSION=2.34-r0
 
 LABEL maintainer="Milos Svasek <Milos@Svasek.net>" \
@@ -40,9 +40,9 @@ ENV \
     # Python packages
     PKGS_PYTHON_0="py3-wheel py3-openssl py3-libxml2" \
     PKGS_PYTHON_1="py3-babel py3-flask-babel py3-flask-login py3-flask py3-tz py3-requests py3-sqlalchemy \
-        py3-tornado py3-unidecode py3-lxml py3-flask-wtf py3-chardet py3-rarfile py3-natsort" \
+        py3-tornado py3-unidecode py3-lxml py3-flask-wtf py3-chardet py3-rarfile py3-natsort py3-dateutil" \
     # Development packages necessary for instalation/compilation python modules with pip
-    PKGS_DEVEL="python3-dev py3-pip py3-setuptools gcc musl-dev"
+    PKGS_DEVEL="python3-dev py3-pip py3-setuptools gcc g++ musl-dev"
 
 RUN \
     # create temporary directories
@@ -80,6 +80,10 @@ RUN \
         'comicapi>=2.2.0,<2.3.0' \
         # metadata extraction
         'scholarly>=1.2.0,<1.6' \
+        'markdown2>=2.0.0,<2.5.0' \
+        'html2text>=2020.1.16,<2022.1.1' \
+        'beautifulsoup4>=4.0.1,<4.2.0' \
+        'cchardet>=2.0.0,<2.2.0' \
     && \
     # fix imagemagick pdf rule
     sed -i 's#<!-- <policy domain="module" rights="none" pattern="{PS,PDF,XPS}" /> -->#<policy domain="module" rights="read" pattern="PDF" />#g' \
