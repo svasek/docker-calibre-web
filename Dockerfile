@@ -38,11 +38,11 @@ ENV \
     # Set the $LD_LIBRARY_PATH to use glibc libraries
     LD_LIBRARY_PATH="/lib:/usr/lib:/usr/glibc-compat/lib:/opt/calibre/lib" \
     # Python packages
-    PKGS_PYTHON_0="py3-wheel py3-openssl py3-libxml2" \
+    PKGS_PYTHON_0="py3-wheel py3-openssl py3-libxml2 py3-setuptools" \
     PKGS_PYTHON_1="py3-babel py3-flask-babel py3-flask-login py3-flask py3-tz py3-requests py3-sqlalchemy \
-        py3-tornado py3-unidecode py3-lxml py3-flask-wtf py3-chardet py3-rarfile py3-natsort py3-dateutil" \
+    py3-tornado py3-unidecode py3-lxml py3-flask-wtf py3-chardet py3-rarfile py3-natsort py3-dateutil py3-beautifulsoup4" \
     # Development packages necessary for instalation/compilation python modules with pip
-    PKGS_DEVEL="python3-dev py3-pip py3-setuptools gcc g++ musl-dev"
+    PKGS_DEVEL="python3-dev py3-pip gcc g++ musl-dev"
 
 RUN \
     # create temporary directories
@@ -82,7 +82,6 @@ RUN \
         'scholarly>=1.2.0,<1.6' \
         'markdown2>=2.0.0,<2.5.0' \
         'html2text>=2020.1.16,<2022.1.1' \
-        'beautifulsoup4>=4.0.1,<4.2.0' \
         'cchardet>=2.0.0,<2.2.0' \
     && \
     # fix imagemagick pdf rule
