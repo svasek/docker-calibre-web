@@ -1,6 +1,6 @@
 FROM alpine:3.15
 
-ARG IMAGE_VERSION=1.6 \
+ARG IMAGE_VERSION=1.7 \
     GLIBC_VERSION=2.35-r0
 
 LABEL maintainer="Milos Svasek <Milos@Svasek.net>" \
@@ -97,10 +97,15 @@ RUN \
     # cleanup temporary files
     rm -rf /tmp/* && rm -rf /var/cache/apk/* && \
     \
+    # create runtime user
+    adduser --disabled-password --home ${APP_HOME} calibre && \
     # create Calibre Web folder structure
     mkdir -p ${APP_HOME}/app ${CALIBRE_DBPATH} ${CALIBRE_PATH} /opt/calibre && \
+    chown calibre:calibre -R ${APP_HOME}/app ${CALIBRE_DBPATH} ${CALIBRE_PATH} /opt/calibre && \
     # set defaults
     git config --global pull.rebase false
+
+USER calibre 
 
 # set the working directory for the APP
 WORKDIR ${APP_HOME}/app
