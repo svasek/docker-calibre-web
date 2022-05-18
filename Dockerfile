@@ -1,6 +1,6 @@
 FROM alpine:3.15
 
-ARG IMAGE_VERSION=1.8 \
+ARG IMAGE_VERSION=1.9 \
     GLIBC_VERSION=2.35-r0
 
 LABEL maintainer="Milos Svasek <Milos@Svasek.net>" \
@@ -71,11 +71,12 @@ RUN \
     ### optional: https://github.com/janeczku/calibre-web/blob/master/optional-requirements.txt
     ### Most of them are replaced by a system packages
     pip install --no-cache-dir --upgrade \
+        'APScheduler>=3.6.3,<3.10.0' \
         'Flask-Principal>=0.3.2,<0.5.1' \
         'backports_abc>=0.4' \
         'iso-639>=0.4.5,<0.5.0' \
         'Wand>=0.4.4,<0.7.0' \
-        'PyPDF3>=1.0.0,<1.0.6' \
+        'PyPDF3>=1.0.0,<1.0.7' \
         ## OPTIONAL
         # Comics
         'comicapi>=2.2.0,<2.3.0' \
