@@ -1,6 +1,6 @@
-FROM alpine:3.15
+FROM alpine:3.16
 
-ARG IMAGE_VERSION=1.9 \
+ARG IMAGE_VERSION=1.10 \
     GLIBC_VERSION=2.35-r0
 
 LABEL maintainer="Milos Svasek <Milos@Svasek.net>" \
@@ -52,7 +52,7 @@ RUN \
     apk -U upgrade && \
     \
     # install python and create a symlink as python
-    # added repository Alpine:3.14 for unrar which is missing in 3.15
+    # added repository Alpine:3.14 for unrar which is missing in newer Alpine
     echo "**** install Packages ****" && \
     apk -U add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/v3.14/main \
         tzdata git curl python3 ca-certificates libxml2 libxslt libev unrar sqlite \
@@ -92,7 +92,7 @@ RUN \
         /etc/ImageMagick-6/policy.xml && \
     # fix issue of 'fake_useragent' with module not connecting properly - IndexError
     sed -i 's/table class="w3-table-all notranslate/table class="ws-table-all notranslate/g' \
-        /usr/lib/python3.9/site-packages/fake_useragent/utils.py && \
+        /usr/lib/python3.10/site-packages/fake_useragent/utils.py && \
     # uninstall unnecessary packages
     apk del --purge ${PKGS_DEVEL} && \
     # cleanup temporary files
