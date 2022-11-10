@@ -62,7 +62,7 @@ RUN \
     \
     wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
     wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk && \
-    apk add --no-cache glibc-${GLIBC_VERSION}.apk && rm -f glibc-${GLIBC_VERSION}.apk && \
+    apk add --no-cache --force-overwrite glibc-${GLIBC_VERSION}.apk && rm -f glibc-${GLIBC_VERSION}.apk && \
     mkdir /lib64 && ln -sf /usr/glibc-compat/lib/ld-linux-x86-64.so.2 /lib64/ld-linux-x86-64.so.2 && \
     \
     echo "---- Install python packages via pip ----" && \
