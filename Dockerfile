@@ -1,6 +1,6 @@
 FROM alpine:3.16
 
-ARG IMAGE_VERSION=1.10 \
+ARG IMAGE_VERSION=1.11 \
     GLIBC_VERSION=2.35-r0
 
 LABEL maintainer="Milos Svasek <Milos@Svasek.net>" \
@@ -39,7 +39,7 @@ ENV \
     LD_LIBRARY_PATH="/lib:/usr/lib:/usr/glibc-compat/lib:/opt/calibre/lib" \
     # Python packages
     PKGS_PYTHON_0="py3-wheel py3-openssl py3-libxml2 py3-setuptools" \
-    PKGS_PYTHON_1="py3-babel py3-flask-babel py3-flask-login py3-flask py3-tz py3-requests py3-sqlalchemy py3-werkzeug \
+    PKGS_PYTHON_1="py3-babel py3-flask-babel py3-flask-login py3-flask py3-tz py3-requests py3-sqlalchemy py3-werkzeug py3-pypdf2 \
     py3-tornado py3-unidecode py3-lxml py3-flask-wtf py3-chardet py3-rarfile py3-natsort py3-dateutil py3-beautifulsoup4" \
     # Development packages necessary for instalation/compilation python modules with pip
     PKGS_DEVEL="python3-dev py3-pip gcc g++ musl-dev linux-headers"
@@ -76,7 +76,6 @@ RUN \
         'backports_abc>=0.4' \
         'iso-639>=0.4.5,<0.5.0' \
         'Wand>=0.4.4,<0.7.0' \
-        'PyPDF3>=1.0.0,<1.0.7' \
         ## OPTIONAL
         # Comics
         'comicapi>=2.2.0,<2.3.0' \
