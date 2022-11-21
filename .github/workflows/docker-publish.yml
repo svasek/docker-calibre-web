@@ -48,8 +48,7 @@ jobs:
       - name: Get the image version
         id: image
         run: |
-          export IMAGE_VERSION=$(grep 'ARG IMAGE_VERSION=' Dockerfile|cut -d'=' -f2|cut -d' ' -f1)
-          echo "::set-output name=version::${IMAGE_VERSION}"
+          echo "version=$(grep 'ARG IMAGE_VERSION=' Dockerfile|cut -d'=' -f2|cut -d' ' -f1)" >> $GITHUB_OUTPUT
 
       # Prepare Docker tags
       # https://github.com/docker/metadata-action
