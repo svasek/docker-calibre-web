@@ -1,6 +1,10 @@
 #!/bin/sh
 
-LATEST_VERSION=$(curl --silent "https://api.github.com/repos/kovidgoyal/calibre/releases/latest" | grep '"tag_name":' |  sed -E 's/.*"([^"]+)".*/\1/' | sed -e 's/^v//g' ) 
+if [ -z "${CALIBRE_VERSION}" ]; then
+    LATEST_VERSION=$(curl --silent "https://api.github.com/repos/kovidgoyal/calibre/releases/latest" | grep '"tag_name":' |  sed -E 's/.*"([^"]+)".*/\1/' | sed -e 's/^v//g' ) 
+else
+    LATEST_VERSION=${CALIBRE_VERSION}
+fi
 LOCAL_VERSION=$(grep -m1 version /opt/calibre/resources/changelog.json 2>/dev/null | sed -E 's/.*"([^"]+)".*/\1/' | sed -e 's/^v//g'); [[ -z ${LOCAL_VERSION} ]] && LOCAL_VERSION=NONE 
 
 # install/update calibre converter
