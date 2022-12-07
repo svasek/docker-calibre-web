@@ -30,6 +30,9 @@ ENV \
     CALIBRE_DBPATH="/calibre-web/config" \
     CALIBRE_PORT="8083" \
     \
+    # Workaround for incompatible Calibre 6.x
+    # Set CALIBRE_VERSION=0 to use latest version
+    CALIBRE_VERSION="5.44.0" \
     # This hack is widely applied to avoid python printing issues in docker containers.
     # See: https://github.com/Docker-Hub-frolvlad/docker-alpine-python3/pull/13
     PYTHONUNBUFFERED=1 \

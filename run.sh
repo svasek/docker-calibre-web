@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ -z "${CALIBRE_VERSION}" ]; then
+if [ -z "${CALIBRE_VERSION}" ] || [ "${CALIBRE_VERSION}" -eq "0" ]; then
     LATEST_VERSION=$(curl --silent "https://api.github.com/repos/kovidgoyal/calibre/releases/latest" | grep '"tag_name":' |  sed -E 's/.*"([^"]+)".*/\1/' | sed -e 's/^v//g' ) 
 else
     LATEST_VERSION=${CALIBRE_VERSION}
