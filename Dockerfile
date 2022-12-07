@@ -1,6 +1,6 @@
-FROM alpine:3.16
+FROM alpine:3.17
 
-ARG IMAGE_VERSION=1.11 \
+ARG IMAGE_VERSION=1.12 \
     GLIBC_VERSION=2.35-r0
 
 LABEL maintainer="Milos Svasek <Milos@Svasek.net>" \
@@ -57,7 +57,7 @@ RUN \
     apk -U add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/v3.14/main \
         tzdata git curl python3 ca-certificates libxml2 libxslt libev unrar sqlite \
         fontconfig freetype lcms2 libjpeg-turbo libltdl libpng libwebp tiff \
-        zlib ghostscript mesa-gl imagemagick6 imagemagick6-libs \
+        zlib ghostscript mesa-gl mesa-egl libxkbcommon imagemagick imagemagick-libs \
         ${PKGS_DEVEL} ${PKGS_PYTHON_0} ${PKGS_PYTHON_1} && \
     \
     wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
@@ -88,7 +88,7 @@ RUN \
     && \
     # fix imagemagick pdf rule
     sed -i 's#<!-- <policy domain="module" rights="none" pattern="{PS,PDF,XPS}" /> -->#<policy domain="module" rights="read" pattern="PDF" />#g' \
-        /etc/ImageMagick-6/policy.xml && \
+        /etc/ImageMagick-*/policy.xml && \
     # fix issue of 'fake_useragent' with module not connecting properly - IndexError
     sed -i 's/table class="w3-table-all notranslate/table class="ws-table-all notranslate/g' \
         /usr/lib/python3.10/site-packages/fake_useragent/utils.py && \
@@ -103,7 +103,7 @@ RUN \
     mkdir -p ${APP_HOME}/app ${CALIBRE_DBPATH} ${CALIBRE_PATH} /opt/calibre && \
     chown calibre:calibre -R ${APP_HOME}/app ${CALIBRE_DBPATH} ${CALIBRE_PATH} /opt/calibre && \
     # set defaults
-    git config --global pull.rebase false
+    git config --global pull.rebase false && git config --global --add safe.directory ${APP_HOME}/app 
 
 USER calibre 
 
