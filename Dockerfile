@@ -1,7 +1,7 @@
 FROM alpine:3.17
 
-ARG IMAGE_VERSION=1.13 \
-    GLIBC_VERSION=2.35-r0
+ARG IMAGE_VERSION=1.14 \
+    GLIBC_VERSION=2.35-r1
 
 LABEL maintainer="Milos Svasek <Milos@Svasek.net>" \
       image.version="${IMAGE_VERSION}" \
@@ -43,7 +43,7 @@ ENV \
     # Python packages
     PKGS_PYTHON_0="py3-wheel py3-openssl py3-libxml2 py3-setuptools" \
     PKGS_PYTHON_1="py3-babel py3-flask-babel py3-flask-login py3-flask py3-tz py3-requests py3-sqlalchemy py3-werkzeug py3-apscheduler \
-    py3-tornado py3-unidecode py3-lxml py3-flask-wtf py3-chardet py3-rarfile py3-natsort py3-dateutil py3-beautifulsoup4" \
+    py3-tornado py3-unidecode py3-lxml py3-flask-wtf py3-chardet py3-rarfile py3-natsort py3-dateutil py3-beautifulsoup4 py3-regex" \
     # Development packages necessary for instalation/compilation python modules with pip
     PKGS_DEVEL="python3-dev py3-pip gcc g++ musl-dev linux-headers"
 
@@ -75,9 +75,8 @@ RUN \
     ### Most of them are replaced by a system packages
     pip install --no-cache-dir --upgrade \
         'Flask-Principal>=0.3.2,<0.5.1' \
-        'Flask-Limiter>=2.3.0,<3.4.0' \
-        'PyPDF>=3.0.0,<3.6.0' \
-        'backports_abc>=0.4' \
+        'Flask-Limiter>=2.3.0,<3.6.0' \
+        'PyPDF>=3.15.6,<4.1.0' \
         'iso-639>=0.4.5,<0.5.0' \
         'Wand>=0.4.4,<0.7.0' \
         ## OPTIONAL
