@@ -1,6 +1,6 @@
-FROM alpine:3.17
+FROM alpine:3.20
 
-ARG IMAGE_VERSION=1.14 \
+ARG IMAGE_VERSION=1.15 \
     GLIBC_VERSION=2.35-r1
 
 LABEL maintainer="Milos Svasek <Milos@Svasek.net>" \
@@ -41,9 +41,14 @@ ENV \
     # Set the $LD_LIBRARY_PATH to use glibc libraries
     LD_LIBRARY_PATH="/lib:/usr/lib:/usr/glibc-compat/lib:/opt/calibre/lib" \
     # Python packages
-    PKGS_PYTHON_0="py3-wheel py3-openssl py3-libxml2 py3-setuptools" \
-    PKGS_PYTHON_1="py3-babel py3-flask-babel py3-flask-login py3-flask py3-tz py3-requests py3-sqlalchemy py3-werkzeug py3-apscheduler \
-    py3-tornado py3-unidecode py3-lxml py3-flask-wtf py3-chardet py3-rarfile py3-natsort py3-dateutil py3-beautifulsoup4 py3-regex" \
+    PKGS_PYTHON_0="py3-wheel py3-wheel-pyc py3-openssl py3-openssl-pyc py3-libxml2 py3-libxml2-pyc py3-setuptools py3-setuptools-pyc" \
+    PKGS_PYTHON_1="py3-babel py3-babel-pyc py3-flask-babel py3-flask-babel-pyc py3-flask py3-flask-pyc py3-tz py3-tz-pyc \
+    py3-requests py3-requests-pyc py3-sqlalchemy py3-sqlalchemy-pyc py3-apscheduler py3-apscheduler-pyc py3-tornado py3-tornado-pyc \
+    py3-unidecode py3-unidecode-pyc py3-lxml py3-lxml-pyc py3-flask-wtf py3-flask-wtf-pyc py3-chardet py3-chardet-pyc \
+    py3-regex py3-regex-pyc py3-iso639 py3-iso639-pyc py3-flask-principal py3-flask-principal-pyc py3-wand py3-wand-pyc \
+    py3-bleach py3-bleach-pyc py3-magic py3-magic-pyc \
+    py3-rarfile py3-rarfile-pyc py3-natsort py3-natsort-pyc py3-dateutil py3-dateutil-pyc py3-beautifulsoup4 py3-beautifulsoup4-pyc \
+    py3-html2text py3-html2text-pyc py3-mutagen py3-mutagen-pyc py3-pycountry" \
     # Development packages necessary for instalation/compilation python modules with pip
     PKGS_DEVEL="python3-dev py3-pip gcc g++ musl-dev linux-headers"
 
@@ -73,28 +78,27 @@ RUN \
     ### see https://github.com/janeczku/calibre-web/blob/master/requirements.txt
     ### optional: https://github.com/janeczku/calibre-web/blob/master/optional-requirements.txt
     ### Most of them are replaced by a system packages
-    pip install --no-cache-dir --upgrade \
-        'Flask-Principal>=0.3.2,<0.5.1' \
-        'Flask-Limiter>=2.3.0,<3.6.0' \
-        'PyPDF>=3.15.6,<4.1.0' \
-        'iso-639>=0.4.5,<0.5.0' \
-        'Wand>=0.4.4,<0.7.0' \
+    pip install --no-cache-dir --upgrade --break-system-packages \
+        'PyPDF>=3.15.6,<4.3.0' \
+        'advocate>=1.0.0,<1.1.0' \
+        'Flask-Limiter>=2.3.0,<3.9.0' \
+        #'bleach>=6.0.0,<6.2.0' \
+        'flask-httpAuth>=4.4.0,<5.0.0' \
         ## OPTIONAL
         # Comics
         'comicapi>=2.2.0,<2.3.0' \
         # metadata extraction
         'scholarly>=1.2.0,<1.8' \
         'markdown2>=2.0.0,<2.5.0' \
-        'html2text>=2020.1.16,<2022.1.1' \
-        'cchardet>=2.0.0,<2.2.0' \
-        'advocate>=1.0.0,<1.1.0' \
+        'faust-cchardet>=2.1.18,<2.1.20' \
+        'py7zr>=0.15.0,<0.21.0' \
     && \
     # fix imagemagick pdf rule
     sed -i 's#<!-- <policy domain="module" rights="none" pattern="{PS,PDF,XPS}" /> -->#<policy domain="module" rights="read" pattern="PDF" />#g' \
         /etc/ImageMagick-*/policy.xml && \
     # fix issue of 'fake_useragent' with module not connecting properly - IndexError
     sed -i 's/table class="w3-table-all notranslate/table class="ws-table-all notranslate/g' \
-        /usr/lib/python3.10/site-packages/fake_useragent/utils.py && \
+        /usr/lib/python3.12/site-packages/fake_useragent/utils.py && \
     # uninstall unnecessary packages
     apk del --purge ${PKGS_DEVEL} && \
     # cleanup temporary files
