@@ -46,7 +46,7 @@ ENV \
     py3-requests py3-requests-pyc py3-sqlalchemy py3-sqlalchemy-pyc py3-apscheduler py3-apscheduler-pyc py3-tornado py3-tornado-pyc \
     py3-unidecode py3-unidecode-pyc py3-lxml py3-lxml-pyc py3-flask-wtf py3-flask-wtf-pyc py3-chardet py3-chardet-pyc \
     py3-regex py3-regex-pyc py3-iso639 py3-iso639-pyc py3-flask-principal py3-flask-principal-pyc py3-wand py3-wand-pyc \
-    py3-bleach py3-bleach-pyc py3-magic py3-magic-pyc \
+    py3-bleach py3-bleach-pyc py3-magic py3-magic-pyc py3-urllib3 py3-urllib3-pyc \
     py3-rarfile py3-rarfile-pyc py3-natsort py3-natsort-pyc py3-dateutil py3-dateutil-pyc py3-beautifulsoup4 py3-beautifulsoup4-pyc \
     py3-html2text py3-html2text-pyc py3-mutagen py3-mutagen-pyc py3-pycountry" \
     # Development packages necessary for instalation/compilation python modules with pip
@@ -79,8 +79,9 @@ RUN \
     ### optional: https://github.com/janeczku/calibre-web/blob/master/optional-requirements.txt
     ### Most of them are replaced by a system packages
     pip install --no-cache-dir --upgrade --break-system-packages \
-        'PyPDF>=3.15.6,<4.3.0' \
-        'advocate>=1.0.0,<1.1.0' \
+        'PyPDF>=3.15.6,<5.1.0' \
+        #'advocate>=1.0.0,<1.1.0' \
+        'netifaces-plus>0.12.0,<0.13.0' \
         'Flask-Limiter>=2.3.0,<3.9.0' \
         #'bleach>=6.0.0,<6.2.0' \
         'flask-httpAuth>=4.4.0,<5.0.0' \
