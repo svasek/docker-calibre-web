@@ -126,4 +126,4 @@ VOLUME ${CALIBRE_DBPATH} ${CALIBRE_PATH}
 # Expose ports
 EXPOSE ${CALIBRE_PORT}
 
-CMD ${APP_HOME}/run.sh 
+CMD ["sh", "-c", "${APP_HOME}/run.sh"]
